@@ -42,9 +42,9 @@ workflows:
                     - thanks_on_slack
             thanks_on_slack:
                 action: slack.post_message
-                wait-before: 5
+                wait-before: 3
                 input:
-                    message: ":space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:\n\n*Thanks for checking out the StackStorm booth!*\n\n:space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:"
+                    message: ":space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:\n\n*Thanks for checking out the StackStorm booth!\n\n*:space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:"
                     channel: "#osdemo"
                 on-success:
                     - rainbowdash_me
@@ -65,7 +65,7 @@ workflows:
         tasks:
             slack_initiate_workflow:
                 action: slack.post_message
-                wait-before: 3
+                wait-before: 1
                 input:
                     message: ":rocket::rocket::rocket:Initiating _SIMULATION_ of _THE WORKFLOW_...:rocket::rocket::rocket:"
                     channel: "#osdemo"
@@ -82,7 +82,7 @@ workflows:
                     - slack_light_red
             slack_light_red:
                 action: slack.post_message
-                wait-before: 3
+                wait-before: 1
                 input:
                     message: ":fire: HOST: <% $.remote_host %> STATUS: <% $.red_status %> :fire: Investigating..."
                     channel: "#osdemo"
@@ -90,7 +90,7 @@ workflows:
                     - change_light_yellow
             change_light_yellow:
                 action: core.remote
-                wait-before: 3
+                wait-before: 1
                 input:
                     hosts: "<% $.remote_host %>"
                     cmd: "echo 'yellow'"
@@ -100,7 +100,7 @@ workflows:
                     - slack_light_yellow
             slack_light_yellow:
                 action: slack.post_message
-                wait-before: 3
+                wait-before: 1
                 input:
                     message: ":warning: HOST: <% $.remote_host %> STATUS: <% $.yellow_status %> :warning: Issue appears to be resolving..."
                     channel: "#osdemo"
@@ -108,7 +108,7 @@ workflows:
                     - change_light_green
             change_light_green:
                 action: core.remote
-                wait-before: 3
+                wait-before: 1
                 input:
                     hosts: "<% $.remote_host %>"
                     cmd: "echo 'green'"
@@ -118,7 +118,7 @@ workflows:
                     - slack_light_green
             slack_light_green:
                 action: slack.post_message
-                wait-before: 3
+                wait-before: 1
                 input:
                     message: ":tada: HOST: <% $.remote_host %> STATUS: <% $.green_status %> :tada:  Woohoo!  Incident is resolved. "
                     channel: "#osdemo"
