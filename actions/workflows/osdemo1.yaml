@@ -1,0 +1,124 @@
+---
+version: "2.0"
+name: osdemo.osdemo1
+description: Openstack Summit Sample Workflow
+
+workflows:
+
+    main:
+        type: direct
+        input:
+            - twitter_user
+            - twitter_url
+            - twitter_response
+            - remote_host
+        output:
+            le_workflow_output: <% $.le_workflow_output %>
+            respond_to_twitter_output: <% $.respond_to_twitter_output %>
+        tasks:
+            tweet_to_slack:
+                action: slack.post_message
+                input:
+                    message: "Hey, We received a tweet from *<% $.twitter_user %>*!\n<% $.twitter_url %>"
+                    channel: "#osdemo"
+                on-success:
+                    - le_workflow
+            le_workflow:
+                workflow: le_workflow
+                input:
+                    twitter_user: "<% $.twitter_user %>"
+                    remote_host: "<% $.remote_host %>"
+                publish:
+                    le_workflow_output: "FIXMENOW"
+                on-success:
+                    - respond_to_twitter
+            respond_to_twitter:
+                action: twitter.update_status
+                input:
+                    status: "@<% $.twitter_user %> <% $.twitter_response %>"
+                publish:
+                    respond_to_twitter_output: "FIXMENOW"
+                on-success:
+                    - thanks_on_slack
+            thanks_on_slack:
+                action: slack.post_message
+                wait-before: 5
+                input:
+                    message: ":space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:\n\n*Thanks for checking out the StackStorm booth!*:space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:"
+                    channel: "#osdemo"
+                on-success:
+                    - rainbowdash_me
+            rainbowdash_me:
+                action: slack.post_message
+                wait-before: 15
+                input:
+                    message: "http://fc02.deviantart.net/fs70/f/2012/126/0/9/rainbow_dash_fly_gif_by_amberoffire-d4yqcia.gif"
+                    channel: "#osdemo"
+
+    le_workflow:
+        type: direct
+        input:
+            - twitter_user
+            - remote_host
+        output:
+            le_workflow: "DONE"
+        tasks:
+            slack_initiate_workflow:
+                action: slack.post_message
+                wait-before: 3
+                input:
+                    message: ":rocket::rocket::rocket:Initiating _SIMULATION_ of _THE WORKFLOW_...:rocket::rocket::rocket:"
+                    channel: "#osdemo"
+                on-success:
+                    - change_light_red
+            change_light_red:
+                action: core.remote
+                input:
+                    hosts: "<% $.remote_host %>"
+                    cmd: "echo 'red'"
+                publish:
+                    red_status: "<% $.change_light_red.stdout %>"
+                on-success:
+                    - slack_light_red
+            slack_light_red:
+                action: slack.post_message
+                wait-before: 3
+                input:
+                    message: ":fire: HOST: <% $.remote_host %> STATUS: <% $.red_status %> :fire: Investigating..."
+                    channel: "#osdemo"
+                on-success:
+                    - change_light_yellow
+            change_light_yellow:
+                action: core.remote
+                wait-before: 3
+                input:
+                    hosts: "<% $.remote_host %>"
+                    cmd: "echo 'yellow'"
+                publish:
+                    yellow_status: "<% $.change_light_yellow.stdout %>"
+                on-success:
+                    - slack_light_yellow
+            slack_light_yellow:
+                action: slack.post_message
+                wait-before: 3
+                input:
+                    message: ":warning: HOST: <% $.remote_host %> STATUS: <% $.yellow_status %> :warning: Issue appears to be resolving..."
+                    channel: "#osdemo"
+                on-success:
+                    - change_light_green
+            change_light_green:
+                action: core.remote
+                wait-before: 3
+                input:
+                    hosts: "<% $.remote_host %>"
+                    cmd: "echo 'green'"
+                publish:
+                    green_status: "<% $.change_light_green.stdout %>"
+                on-success:
+                    - slack_light_green
+            slack_light_green:
+                action: slack.post_message
+                wait-before: 3
+                input:
+                    message: ":tada: HOST: <% $.remote_host %> STATUS: <% $.green_status %> :tada:  Woohoo!  Incident is resolved. "
+                    channel: "#osdemo"
