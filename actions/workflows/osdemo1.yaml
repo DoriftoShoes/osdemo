@@ -44,7 +44,7 @@ workflows:
                 action: slack.post_message
                 wait-before: 5
                 input:
-                    message: ":space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:\n\n*Thanks for checking out the StackStorm booth!*\n:space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:"
+                    message: ":space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:\n\n*Thanks for checking out the StackStorm booth!*\n\n:space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:"
                     channel: "#osdemo"
                 on-success:
                     - rainbowdash_me
