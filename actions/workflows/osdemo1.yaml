@@ -44,15 +44,7 @@ workflows:
                 action: slack.post_message
                 wait-before: 3
                 input:
-                    message: ":space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:\n\n*Thanks for checking out the StackStorm booth!\n\n*:space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader::space_invader:"
-                    channel: "#osdemo"
-                on-success:
-                    - rainbowdash_me
-            rainbowdash_me:
-                action: slack.post_message
-                wait-before: 15
-                input:
-                    message: "http://fc02.deviantart.net/fs70/f/2012/126/0/9/rainbow_dash_fly_gif_by_amberoffire-d4yqcia.gif"
+                    message: ":space_invader::space_invader::space_invader:   *Thanks for checking out the StackStorm booth!*   :space_invader::space_invader::space_invader:"
                     channel: "#osdemo"
 
     le_workflow:
@@ -67,7 +59,7 @@ workflows:
                 action: slack.post_message
                 wait-before: 1
                 input:
-                    message: ":rocket::rocket::rocket:Initiating _SIMULATION_ of _THE WORKFLOW_...:rocket::rocket::rocket:"
+                    message: ":rocket::rocket::rocket:   Initiating _SIMULATION_ of _THE WORKFLOW_   :rocket::rocket::rocket:"
                     channel: "#osdemo"
                 on-success:
                     - change_light_red
@@ -77,14 +69,14 @@ workflows:
                     hosts: "<% $.remote_host %>"
                     cmd: "echo 'red'"
                 publish:
-                    red_status: "<% $.change_light_red.stdout %>"
+                    red_status: "<% $.change_light_red.localhost.stdout %>"
                 on-success:
                     - slack_light_red
             slack_light_red:
                 action: slack.post_message
                 wait-before: 1
                 input:
-                    message: ":fire: HOST: <% $.remote_host %> STATUS: <% $.red_status %> :fire: Investigating..."
+                    message: ":fire: *HOST:* <% $.remote_host %> *STATUS:* <% $.red_status %> :fire:\n        Investigating..."
                     channel: "#osdemo"
                 on-success:
                     - change_light_yellow
@@ -95,14 +87,14 @@ workflows:
                     hosts: "<% $.remote_host %>"
                     cmd: "echo 'yellow'"
                 publish:
-                    yellow_status: "<% $.change_light_yellow.stdout %>"
+                    yellow_status: "<% $.change_light_yellow.localhost.stdout %>"
                 on-success:
                     - slack_light_yellow
             slack_light_yellow:
                 action: slack.post_message
                 wait-before: 1
                 input:
-                    message: ":warning: HOST: <% $.remote_host %> STATUS: <% $.yellow_status %> :warning: Issue appears to be resolving..."
+                    message: ":warning:   *HOST:* <% $.remote_host %> *STATUS:* <% $.yellow_status %>   :warning:\n        Issue appears to be resolving..."
                     channel: "#osdemo"
                 on-success:
                     - change_light_green
@@ -113,12 +105,12 @@ workflows:
                     hosts: "<% $.remote_host %>"
                     cmd: "echo 'green'"
                 publish:
-                    green_status: "<% $.change_light_green.stdout %>"
+                    green_status: "<% $.change_light_green.localhost.stdout %>"
                 on-success:
                     - slack_light_green
             slack_light_green:
                 action: slack.post_message
                 wait-before: 1
                 input:
-                    message: ":tada: HOST: <% $.remote_host %> STATUS: <% $.green_status %> :tada:  Woohoo!  Incident is resolved. "
+                    message: ":tada:   *HOST:* <% $.remote_host %> *STATUS:* <% $.green_status %>   :tada:\n        Woohoo!  Incident is resolved. "
                     channel: "#osdemo"
