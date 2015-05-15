@@ -1,6 +1,6 @@
 ---
 version: "2.0"
-name: osdemo.osdemo1
+name: osdemo.osdemo1-mistral
 description: Openstack Summit Sample Workflow
 
 workflows:

@@ -1,0 +1,35 @@
+---
+  chain:
+    -
+      name: "tweet_to_slack"
+      ref: "slack.post_message"
+      params:
+        message: "We received a tweet from {{twitter_user}}!\n{{twitter_url}}"
+        channel: "#osdemo"
+      on-success: "turn_light_red"
+    -
+      name: "turn_light_red"
+      ref: "core.remote"
+      params:
+        hosts: "localhost"
+        cmd: "echo 'red'"
+      on-success: "turn_light_yellow"
+    -
+      name: "turn_light_yellow"
+      ref: "core.remote"
+      params:
+        hosts: "localhost"
+        cmd: "echo 'yellow'"
+      on-success: "turn_light_green"
+    -
+      name: "turn_light_green"
+      ref: "core.remote"
+      params:
+        hosts: "localhost"
+        cmd: "echo 'green'"
+      on-success: "tweet_back"
+    -
+      name: "tweet_back"
+      ref: "twitter.update_status"
+      params:
+        status: "@{{twitter_user}} {{twitter_response}}"

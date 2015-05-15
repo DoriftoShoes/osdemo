@@ -1,9 +1,9 @@
 ---
 description: "Mistral workflow for the Openstack Demo"
 enabled: true
-entry_point: "workflows/osdemo1.yaml"
-runner_type: "mistral-v2"
-name: "osdemo1"
+entry_point: "workflows/osdemo1.chain.yaml"
+runner_type: "action-chain"
+name: "osdemo1-chain"
 pack: "osdemo"
 parameters:
   twitter_user:
@@ -18,11 +18,3 @@ parameters:
   remote_host:
     type: string
     default: "localhost"
-  context:
-    default: {}
-    immutable: true
-    type: object
-  workflow:
-    default: osdemo.osdemo1.main
-    immutable: true
-    type: string

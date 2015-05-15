@@ -7,7 +7,7 @@ trigger:
   parameters: {}
 criteria: {}
 action:
-  ref: osdemo.osdemo1
+  ref: osdemo.osdemo1-mistral
   parameters:
     twitter_user: "{{trigger.user.screen_name}}"
     twitter_url: "{{trigger.url}}"
