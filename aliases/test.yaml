@@ -1,0 +1,5 @@
+---
+name: "runlocal"
+action_ref: "core.local"
+formats:
+  - "{{cmd}}"

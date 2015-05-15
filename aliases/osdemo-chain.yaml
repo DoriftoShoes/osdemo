@@ -1,0 +1,5 @@
+---
+name: "osdemo-chain"
+action_ref: "osdemo.osdemo1-chain"
+formats:
+  - "{{twitter_user}}"

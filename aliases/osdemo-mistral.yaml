@@ -1,0 +1,5 @@
+---
+name: "osdemo-mistral"
+action_ref: "osdemo.osdemo1-mistral"
+formats:
+  - "{{twitter_user}}"
